@@ -1,17 +1,20 @@
-import type { PlopTypes } from "@turbo/gen"
-import { input } from "@inquirer/prompts"
+import type { PlopTypes } from "@turbo/gen";
+import { canResolveSlugifyFromWorkspace } from "./helpers/can-resolve-slugify-from-workspace";
 
 export default function generator(plop: PlopTypes.NodePlopAPI): void {
-  plop.setGenerator("example", {
-    description:
-      "An example Turborepo generator - creates a new file at the root of the project",
-    prompts: async () => {
-      const name = await input({
-        message: "What is the name of the new file to create?",
-      })
+  const description = canResolveSlugifyFromWorkspace()
+    ? "Workspace dependency resolved from turbo/generators"
+    : "Workspace dependency missing";
 
-      return { name }
-    },
+  plop.setGenerator("example", {
+    description,
+    prompts: [
+      {
+        type: "input",
+        name: "name",
+        message: "What is the name of the new file to create?",
+      },
+    ],
     actions: [
       {
         type: "add",
@@ -19,5 +22,5 @@ export default function generator(plop: PlopTypes.NodePlopAPI): void {
         templateFile: "templates/turborepo-generators.hbs",
       },
     ],
-  })
+  });
 }

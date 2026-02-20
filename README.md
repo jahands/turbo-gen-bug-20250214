@@ -1,23 +1,29 @@
 # turbo-gen-bug-20250214
 
-@turbo/gen version 2.8.8 broke the ability to import @inquirer/prompts in config.ts
+The original `@inquirer/prompts` regression from 2.8.8 was fixed.
 
-To repro, run:
+This repo now reproduces a different issue in a pnpm workspace layout:
+
+- `turbo/generators/config.ts` imports a local helper
+- that helper imports `slugify`
+- `slugify` is declared only in `turbo/generators/package.json`
+
+`turbo gen` fails to resolve that workspace-local dependency.
+
+## Repro
 
 ```sh
-bunx @turbo/gen@2.8.7 # works
-bunx @turbo/gen@2.8.8 # doesn't work
+pnpm install
+turbo gen
 ```
 
-Here's the error I get on 2.8.8:
+Expected: generator list appears.
+
+Actual:
 
 ```
-$ bunx @turbo/gen@2.8.8
-
 >>> Modify "turbo-gen-bug-20250214" using custom generators
 
->>> ResolveMessage: Cannot find module '@inquirer/prompts' from '/Users/jh/src/turbo-gen-bug-20250214/turbo/generators/config.ts'
+>>> ResolveMessage: Cannot find package 'slugify' from '/Users/jh/src/turbo-gen-bug-20250214/turbo/generators/helpers/can-resolve-slugify-from-workspace.ts'
 >>> No generators found.
-
-? Would you like to add a config with a sample custom generator to turbo-gen-bug-20250214? (Y/n)
 ```

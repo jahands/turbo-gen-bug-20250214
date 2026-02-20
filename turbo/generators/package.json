@@ -1,6 +1,8 @@
 {
   "type": "commonjs",
   "dependencies": {
-    "@inquirer/prompts": "^8.2.1"
+    "@inquirer/prompts": "^8.2.1",
+    "@turbo/gen": "2.8.11-canary.10",
+    "slugify": "^1.6.6"
   }
 }

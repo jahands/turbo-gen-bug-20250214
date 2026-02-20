@@ -2,9 +2,11 @@
   "name": "turbo-gen-bug-20250214",
   "type": "module",
   "private": true,
+  "sideEffects": false,
   "devDependencies": {
+    "@turbo/gen": "2.8.11-canary.10",
     "@types/bun": "latest",
-    "@turbo/gen": "2.8.8"
+    "turbo": "2.8.10"
   },
   "peerDependencies": {
     "typescript": "^5"
